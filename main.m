@@ -1,4 +1,20 @@
-%%%test for Random MultiGraphs
+
+%======================================================
+% The files are the MATLAB source code for the paper:
+% 
+% Feng Gao, Huizhen Yang, Junyu Dong, Qin Zhang.
+% 
+% Spectral and spatial classification of hyperspectral 
+% image based on random multi-graphs
+% 
+% Journal of Applied Remote Sensing. 12(1), 016010 (2018).
+% 
+% The demo has not been well organized. 
+% Please contact me if you meet any problems.
+% 
+% Email: gaofeng@ouc.edu.cn
+%=======================================================
+
 clear all;
 clc;
 
@@ -30,7 +46,7 @@ CTrain = [5 143 83 24 48 73 3 48 2 97 246 59 21 127 39 9];
 
 no_class = max(gth(:));
 
-% 数据归一化
+% data normalization
 fprintf(' ... ... data normalization    ... ...\n');
 Data = z./max(z(:));
 [ylen, xlen, spec_dim] = size(Data);
@@ -109,7 +125,7 @@ labels = [TrnLab;TstLab];
 [G,F]  = MultiGraphs(X,labels,label_index,kg,kf);
 
 
-% 获得分类结果
+% obtain the classification result
 [val, predict_res]=max(F,[],2);
         
 [Pr, ConfMat] = GetAccuracy(predict_res(length(label_index)+1:end), ...
