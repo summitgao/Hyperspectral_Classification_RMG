@@ -10,7 +10,7 @@ bandNum = 3; % number of band for LPE band selection
 w = 10;       % patch size
 % LBP feature extraction
 r = 2;  nr = 8;
-% Í¼µÄ¸öÊı
+% number of graphs
 kg = 6;
 
 fprintf('... ... loading data begin ...\n');
@@ -18,12 +18,11 @@ load SeaIceDataset.mat;
 fprintf('... ... loading data finished !!! \n');
 
 % training number for Inidan_Pines dataset
-% CTrain = [5 143 83 24 48 73 3 48 2 97 246 59 21 127 39 9];
+CTrain = [5 143 83 24 48 73 3 48 2 97 246 59 21 127 39 9];
 % training number for Pavia_University dataset
 % CTrain = [ 66 186 21 31 13 50 13 37 9 ];
 % training number for Baffin Bay dataset
-CTrain = [75 136 526 114];
-z = data;
+%CTrain = [75 136 526 114];
 %===== basic parameters =================================
 
 
@@ -31,7 +30,7 @@ z = data;
 
 no_class = max(gth(:));
 
-% Êı¾İ¹éÒ»»¯
+% æ•°æ®å½’ä¸€åŒ–
 fprintf(' ... ... data normalization    ... ...\n');
 Data = z./max(z(:));
 [ylen, xlen, spec_dim] = size(Data);
@@ -104,13 +103,13 @@ fprintf('... ... Graph number:%d ... ...\n', kg);
 % gaofeng revised code 2017/04/08
 kf = floor(Dim/4);
 
-% µÃµ½ÑµÁ·Ñù±¾ÔÚÕûÌåÑù±¾¼¯ÖĞµÄ index 
+% å¾—åˆ°è®­ç»ƒæ ·æœ¬åœ¨æ•´ä½“æ ·æœ¬é›†ä¸­çš„ index 
 label_index = find(TrnLab~=0);
 labels = [TrnLab;TstLab];
 [G,F]  = MultiGraphs(X,labels,label_index,kg,kf);
 
 
-% »ñµÃ·ÖÀà½á¹û
+% è·å¾—åˆ†ç±»ç»“æœ
 [val, predict_res]=max(F,[],2);
         
 [Pr, ConfMat] = GetAccuracy(predict_res(length(label_index)+1:end), ...
