@@ -1,10 +1,10 @@
 The files are the MATLAB source code for the paper:
 
-Feng Gao, Huizhen Yang, Junyu Dong, Qin Zhang
+Feng Gao, Qun Wang, Junyu Dong, Qizhi Xu
 
 Spectral and spatial classification of hyperspectral image based on random multi-graphs
 
-submitted to Remote Sensing Letters
+Remote Sensing, 2018, 10(8), 1271
 
 The demo has not been well organized.
 
