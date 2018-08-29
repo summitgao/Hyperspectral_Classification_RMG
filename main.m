@@ -1,20 +1,4 @@
-
-%======================================================
-% The files are the MATLAB source code for the paper:
-% 
-% Feng Gao, Huizhen Yang, Junyu Dong, Qin Zhang.
-% 
-% Spectral and spatial classification of hyperspectral 
-% image based on random multi-graphs
-% 
-% Journal of Applied Remote Sensing. 12(1), 016010 (2018).
-% 
-% The demo has not been well organized. 
-% Please contact me if you meet any problems.
-% 
-% Email: gaofeng@ouc.edu.cn
-%=======================================================
-
+%%%test for Random MultiGraphs
 clear all;
 clc;
 
@@ -22,28 +6,23 @@ addpath('./rmg/');
 addpath('./util/');
 
 %===== basic parameters =================================
-bandNum = 3; % number of band for LPE band selection  
-w = 10;       % patch size
+bandNum = 4; % number of band for LPE band selection  
+w = 7;       % patch size
 % LBP feature extraction
-r = 2;  nr = 8;
+r = 1;  nr = 8;
 % number of graphs
-kg = 6;
+% for computationa efficiency, number of graphs are set as 4.
+% you can set more graphs to obtain better performance
+kg = 4;
 
 fprintf('... ... loading data begin ...\n');
-load SeaIceDataset.mat;
+load IndianPines_Data.mat;
 fprintf('... ... loading data finished !!! \n');
 
 % training number for Inidan_Pines dataset
 CTrain = [5 143 83 24 48 73 3 48 2 97 246 59 21 127 39 9];
-% training number for Pavia_University dataset
-% CTrain = [ 66 186 21 31 13 50 13 37 9 ];
-% training number for Baffin Bay dataset
-%CTrain = [75 136 526 114];
-%===== basic parameters =================================
 
-
-
-
+%===== basic parameters ===============================
 no_class = max(gth(:));
 
 % data normalization
@@ -71,6 +50,7 @@ DataSpat = NewScale(reshape(Feature_P, ylen*xlen, lbp_dim));
 % spectral data
 DataSpec = NewScale(reshape(Data, ylen*xlen, spec_dim));
 % spatial and spectral data combination
+DataSpec = DataSpec(:, 1:150);
 Data_spec_spat = [DataSpat, DataSpec];
 clear DataSpat DataSpec Data Feature_P bandNum;
 clear lbp_dim mapping w;
@@ -90,13 +70,16 @@ k = 0;
 for i = 1: no_class
     Data_tmp = Data((k+1):(Labels(i)+k), :);
     k = Labels(i) + k;
-    rand('seed', 2);
     index_i = randperm(Labels(i));
     DataTrn = [DataTrn; Data_tmp(index_i(1:CTrain(i)), :)];
-    DataTst = [DataTst; Data_tmp(index_i(CTrain(i)+1:end), :)];
-    CTest =  [CTest length(index_i(CTrain(i)+1:end))];
+    index_i = find(gth==i);
+    CTest(i) = length(index_i);
 end
-clear k Data_tmp Data;
+
+DataTst = Data;
+
+
+clear k Data_tmp Data index_i;
 
 TrnLab = []; TstLab = [];
 for jj = 1: length(CTrain)
@@ -119,13 +102,13 @@ fprintf('... ... Graph number:%d ... ...\n', kg);
 % gaofeng revised code 2017/04/08
 kf = floor(Dim/4);
 
-% 得到训练样本在整体样本集中的 index 
+
 label_index = find(TrnLab~=0);
 labels = [TrnLab;TstLab];
 [G,F]  = MultiGraphs(X,labels,label_index,kg,kf);
 
 
-% obtain the classification result
+
 [val, predict_res]=max(F,[],2);
         
 [Pr, ConfMat] = GetAccuracy(predict_res(length(label_index)+1:end), ...
