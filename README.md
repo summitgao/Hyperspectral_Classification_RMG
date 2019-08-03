@@ -6,8 +6,10 @@ Spectral and spatial classification of hyperspectral image based on random multi
 
 Remote Sensing, 2018, 10(8), 1271
 
-The demo has not been well organized.
+The demo has not been well organized. Please contact me if you meet any problems.
 
-Please contact me if you meet any problems.
+**Please cite our paper if you use our codes. Thanks!**
 
-Email: gaofeng@ouc.edu.cn
+If you have any queries, please do not hesitate to contact me (gaofeng AT ouc.edu.cn).
+
+More codes can be obtained from http://feng-gao.cn
